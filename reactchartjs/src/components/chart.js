@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
-import {Bar, Line, Pie} from 'react-chartjs-2'
+import {Bar} from 'react-chartjs-2'
+import * as chartAnnotation from 'chartjs-plugin-annotation'
 
 class Chart extends Component {
     constructor(props){
@@ -24,7 +25,7 @@ class Chart extends Component {
                     options={{
                         title:{
                             display:this.props.displayTitle,
-                            text:'Lorem ipsum',
+                            text:'Histograma',
                             fontSize: 36
                         },
                         legend:{
@@ -36,6 +37,18 @@ class Chart extends Component {
                                 ticks:{
                                     beginAtZero:true
                                 }
+                            }]
+                        },
+                        annotation: {
+                            annotations: [{
+                                type: 'box',
+                                drawTime: 'beforeDatasetsDraw',
+                                id: 'region-1',
+                                mode: "horizontal",
+                                yScaleID: 'y-axis-0',
+                                yMin: 1.2,
+                                yMax: 6.5,
+                                backgroundColor: 'rgba(200,230,201,0.5)'
                             }]
                         }
 

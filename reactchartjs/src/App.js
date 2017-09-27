@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Chart from './components/chart'
+import data from './data/historic'
 class App extends Component {
   constructor(props){
     super(props);
@@ -14,28 +15,41 @@ class App extends Component {
   }
   getChartData(){
     //Ajax Call
+    
+    const fechaResultado = data.map((e) => {
+      return e.FECHARESULTADO
+    })
+    const resultado = data.map((e) => {
+      return e.RESULTADO
+    })
+
+    const colorResultado = resultado.map((e)=>{
+      if (e<data[0].INFERIOR) {
+        return '#FFDE21'
+      } else if(e>data[0].SUPERIOR){
+        return '#D12229'
+      }else{
+        return '#016FB9'
+      }
+    })
+    const colorBorde = resultado.map((e) => {
+      if (e < data[0].INFERIOR) {
+        return 'rgba(255, 206, 86, 1)'
+      } else if (e > data[0].SUPERIOR) {
+        return 'rgba(255,99,132,1)'
+      } else {
+        return 'rgba(54, 162, 235, 1)'
+      }
+    })
+    console.log(colorResultado)
     this.setState({
         chartData: {
-          labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
+          labels: fechaResultado,
           datasets: [{
-            label: '# of Votes',
-            data: [12, 19, 3, 5, 7, 3],
-            backgroundColor: [
-              'rgba(255, 99, 132, 0.2)',
-              'rgba(54, 162, 235, 0.2)',
-              'rgba(255, 206, 86, 0.2)',
-              'rgba(75, 192, 192, 0.2)',
-              'rgba(153, 102, 255, 0.2)',
-              'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-              'rgba(255,99,132,1)',
-              'rgba(54, 162, 235, 1)',
-              'rgba(255, 206, 86, 1)',
-              'rgba(75, 192, 192, 1)',
-              'rgba(153, 102, 255, 1)',
-              'rgba(255, 159, 64, 1)'
-            ],
+            label: 'Historico',
+            data: resultado,
+            backgroundColor: colorResultado,
+            borderColor: colorBorde,
             borderWidth: 1
           }]
         }
@@ -44,13 +58,6 @@ class App extends Component {
   render() {
     return (
       <div>
-        <div className="App">
-          <header className="App-header">
-            <img src={logo} className="App-logo" alt="logo" />
-            <h1 className="App-title">Welcome to React</h1>
-          </header>
-
-        </div>
         <div>
           <Chart chartData={this.state.chartData}/>
         </div>
