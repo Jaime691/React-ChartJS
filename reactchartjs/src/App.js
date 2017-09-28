@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
-import Chart from './components/chart'
+import ChartList from './components/chartList'
+import ButtonList from './components/buttonList'
 import data from './data/historic'
+import graphs from './data/graphs'
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      chartData:{}
+      chartData:{},
+      dataSet:[],
+      graphs:[{key:1, value:10}],
+      selectedGraph: null
     }
   }
   componentWillMount(){
@@ -41,8 +45,9 @@ class App extends Component {
         return 'rgba(54, 162, 235, 1)'
       }
     })
-    console.log(colorResultado)
+
     this.setState({
+        graphs:{graphs},
         chartData: {
           labels: fechaResultado,
           datasets: [{
@@ -56,13 +61,21 @@ class App extends Component {
     })
   }
   render() {
+    
     return (
       <div>
-        <div>
-          <Chart chartData={this.state.chartData}/>
+        
+        <div className="col-md-2">
+          <ButtonList 
+            graphSelect={selectedGraph => this.setState({ selectedGraph })}
+            graphs={this.state.graphs} />
+        </div>
+        <div className="col-md-10">
+          <ChartList chartData={this.state.chartData} />
         </div>
       </div>
     );
+    console.log(this.state)
   }
 }
 

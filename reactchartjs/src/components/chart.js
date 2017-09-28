@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Bar} from 'react-chartjs-2'
-import * as chartAnnotation from 'chartjs-plugin-annotation'
+import 'chartjs-plugin-annotation'
 
 class Chart extends Component {
     constructor(props){
