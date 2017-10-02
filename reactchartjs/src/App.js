@@ -1,81 +1,87 @@
 import React, { Component } from 'react';
+import axios from 'axios';
 import './App.css';
 import ChartList from './components/chartList'
 import ButtonList from './components/buttonList'
-import data from './data/historic'
-import graphs from './data/graphs'
+// import data from './data/historic'
+// import graphs from './data/graphs'
 class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       chartData:{},
-      dataSet:[],
-      graphs:[{key:1, value:10}],
-      selectedGraph: null
+      graphs:[],
+      selectedGraph: {id:0,name:'zero',set:[0]},
+      loading: true,
+      error: null
     }
   }
-  componentWillMount(){
+  componentDidMount(){
     this.getChartData();
   }
-  getChartData(){
-    //Ajax Call
-    
-    const fechaResultado = data.map((e) => {
-      return e.FECHARESULTADO
-    })
-    const resultado = data.map((e) => {
-      return e.RESULTADO
-    })
 
-    const colorResultado = resultado.map((e)=>{
-      if (e<data[0].INFERIOR) {
-        return '#FFDE21'
-      } else if(e>data[0].SUPERIOR){
-        return '#D12229'
-      }else{
-        return '#016FB9'
-      }
-    })
-    const colorBorde = resultado.map((e) => {
-      if (e < data[0].INFERIOR) {
-        return 'rgba(255, 206, 86, 1)'
-      } else if (e > data[0].SUPERIOR) {
-        return 'rgba(255,99,132,1)'
-      } else {
-        return 'rgba(54, 162, 235, 1)'
-      }
-    })
-
-    this.setState({
-        graphs:{graphs},
-        chartData: {
-          labels: fechaResultado,
-          datasets: [{
-            label: 'Historico',
-            data: resultado,
-            backgroundColor: colorResultado,
-            borderColor: colorBorde,
-            borderWidth: 1
-          }]
-        }
-    })
+  renderLoading() {
+    return <div>Loading...</div>;
   }
-  render() {
-    
+
+  renderError() {
     return (
       <div>
-        
+        Something went wrong: {this.state.error.message}
+      </div>
+    );
+  }
+
+  renderGraphs() {
+    // Using destructuring to extract the 'error' and 'posts'
+    // keys from state. This saves having to write "this.state.X" everwhere.
+    const { error, graphs } = this.state;
+
+    if (error) {
+      return this.renderError();
+    }
+
+    return (
+      <div>
         <div className="col-md-2">
-          <ButtonList 
+          <ButtonList
             graphSelect={selectedGraph => this.setState({ selectedGraph })}
             graphs={this.state.graphs} />
         </div>
         <div className="col-md-10">
-          <ChartList chartData={this.state.chartData} />
+          <ChartList selectedGraph={this.state.selectedGraph} />
         </div>
+
       </div>
     );
-    console.log(this.state)
+  }
+  getChartData(){
+    //Ajax Call
+
+    axios.get(`http://localhost:5000/data`)
+      .then(res => {
+        const graphs = res.data;
+        this.setState({
+          graphs,
+          loading: false,
+          error: null
+        });
+      }).catch(err => {
+        // Something went wrong. Save the error in state and re-render.
+        this.setState({
+          loading: false,
+          error: err
+        });
+      });
+  }
+  render() {
+    const { loading } = this.state;
+
+    return (
+      <div>
+        {loading ? this.renderLoading() : this.renderGraphs()}
+      </div>
+    );
   }
 }
 

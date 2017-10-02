@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ButtonListItem from './button';
 
 const ButtonList = (props) => {
-    const graphItems = props.graphs.graphs.map((graph) => {
+    const graphItems = props.graphs.map((graph) => {
         return <ButtonListItem
             graphSelect={props.graphSelect}
             key={graph.id}

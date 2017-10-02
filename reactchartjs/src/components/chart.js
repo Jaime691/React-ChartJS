@@ -1,36 +1,29 @@
-import React, {Component} from 'react'
+import React from 'react'
 import {Bar} from 'react-chartjs-2'
 import 'chartjs-plugin-annotation'
 
-class Chart extends Component {
-    constructor(props){
-        super(props);
-        this.state = {
-            chartData: props.chartData
-        }
-    }
+const Chart = (props) => {
 
-    static defaultProps = {
-        displayTitle : true,
-        displayLegend: true,
-        legendPosition: 'right'
-    }
-    render(){
+     const displayTitle  = true,
+        displayLegend = true,
+        legendPosition = 'right'
+        
         return(
+            
             <div className="Chart">
                 <Bar
-                    data={this.state.chartData}
+                    data={props.chartData}
                     width={100}
                     height={50}
                     options={{
                         title:{
-                            display:this.props.displayTitle,
+                            display: displayTitle,
                             text:'Histograma',
                             fontSize: 36
                         },
                         legend:{
-                            display: this.props.displayLegend,
-                            position: this.props.legendPosition
+                            display: displayLegend,
+                            position: legendPosition
                         },
                         scales:{
                             yAxes:[{
@@ -57,6 +50,6 @@ class Chart extends Component {
             </div>
         )
     }
-}
+
 
 export default Chart;

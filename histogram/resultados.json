@@ -1,7 +1,7 @@
-const graphs =[{
-    id: 1,
-    name: "data1",
-    set:[{
+{"data":[{
+    "id": 1,
+    "name": "data1",
+    "set":[{
     "FECHARESULTADO": "12/17/2011",
     "HORARESULTADO": "2:41 PM",
     "INFERIOR": 1.2,
@@ -73,9 +73,9 @@ const graphs =[{
     "NUMOT": "0161354866"
 }]},
     {
-        id: 2,
-        name: "data2",
-        set: [{
+        "id": 2,
+        "name": "data2",
+        "set": [{
             "FECHARESULTADO": "08/19/2007",
             "HORARESULTADO": "11:40 AM",
             "INFERIOR": 1.2,
@@ -148,9 +148,9 @@ const graphs =[{
         }]
     },
     {
-        id: 3,
-        name: "data3",
-        set: [{
+        "id": 3,
+        "name": "data3",
+        "set": [{
             "FECHARESULTADO": "12/26/2009",
             "HORARESULTADO": "12:32 PM",
             "INFERIOR": 1.2,
@@ -223,5 +223,4 @@ const graphs =[{
         }]
     }
 ]
-
-export default graphs
+}

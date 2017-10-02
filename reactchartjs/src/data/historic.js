@@ -10,7 +10,7 @@ const data = [{
     "HORARESULTADO": "6:48 AM",
     "INFERIOR": 1.2,
     "SUPERIOR": 6.5,
-    "RESULTADO": 6.0,
+    "RESULTADO": 6.7,
     "NUMOT": "4440653995"
 }, {
     "FECHARESULTADO": "12/07/1998",
