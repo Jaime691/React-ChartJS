@@ -2,11 +2,6 @@ import React, {Component} from 'react';
 import ButtonListItem from './buttonListItem';
 
 class ButtonList extends Component {
-    constructor(props){
-        super(props);
-
-
-    }
     render(){
         const buttonItems = this.props.graphs.map((graph) => {
             return <ButtonListItem

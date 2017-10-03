@@ -16,16 +16,6 @@ class App extends Component {
       graph:[],
       graphsForCharts:[],
       graphsForButtons:[],
-      selectedGraph: {
-        id: 0, name: 'zero', set: [{
-          FECHARESULTADO:"",
-          HORARESULTADO:"",
-          INFERIOR:0,
-          NUMOT:"",
-          RESULTADO:0,
-          SUPERIOR:0
-        }]
-  },
       loading: true,
       error: null
     }

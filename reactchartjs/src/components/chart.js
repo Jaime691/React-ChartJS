@@ -52,18 +52,9 @@ const Chart = (props) => {
         legendPosition = 'right';
     
 
-     const yMin = data[0].INFERIOR, yMax = data[0].SUPERIOR;
+     const yMin = data[0].INFERIOR,
+         yMax = data[0].SUPERIOR;
 
-    let annotations= [{
-         type: 'box',
-         drawTime: 'beforeDatasetsDraw',
-         id: 'region-1',
-         mode: "horizontal",
-         yScaleID: 'y-axis-0',
-         yMin: yMin,
-         yMax: yMax,
-         backgroundColor: 'rgba(200,230,201,0.5)'
-     }]
 
     const tableItems = props.selectedGraph.set.map((e) => {
         return(
@@ -93,29 +84,41 @@ const Chart = (props) => {
                             tooltips:{
                                 enabled: false
                             },
-                            scales: {
-                                yAxes: [{
-                                    ticks: {
-                                        beginAtZero: true
-                                    }
+                            annotation: {
+                                annotations: [{
+                                    type: 'box',
+                                    drawTime: 'beforeDatasetsDraw',
+                                    id: 'region-1',
+                                    mode: "horizontal",
+                                    yScaleID: 'y-axis-0',
+                                    yMin: yMin,
+                                    yMax: yMax,
+                                    backgroundColor: 'rgba(200,230,201,0.5)'
                                 }]
                             },
                             animation: {
-                                onComplete: function () {
+                                onComplete: function() {
                                     var ctx = this.chart.ctx;
                                     ctx.textAlign = "center";
                                     ctx.textBaseline = "middle";
                                     var chart = this;
                                     var datasets = this.config.data.datasets;
 
-                                    datasets.forEach(function (dataset, i) {
+                                    datasets.forEach(function(dataset, i) {
                                         ctx.font = "24px Lobster Two";
-                                        ctx.fillStyle = "#4F4C4D";
-                                        chart.getDatasetMeta(i).data.forEach(function (p, j) {
-                                            ctx.fillText(datasets[i].data[j], p._model.x, p._model.y - 20);
+                                    ctx.fillStyle = "#4F4C4D";
+                                        chart.getDatasetMeta(i).data.forEach(function(p, j) {
+                                        ctx.fillText(datasets[i].data[j], p._model.x, p._model.y - 20);
                                         });
                                     });
                                 }
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
                             }
 
                         }}
