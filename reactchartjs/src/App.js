@@ -3,6 +3,8 @@ import axios from 'axios';
 import './App.css';
 import ChartList from './components/chartList'
 import ButtonList from './components/buttonList'
+
+
 // import data from './data/historic'
 // import graphs from './data/graphs'
 class App extends Component {
@@ -11,13 +13,48 @@ class App extends Component {
     this.state = {
       chartData:{},
       graphs:[],
-      selectedGraph: {id:0,name:'zero',set:[0]},
+      graph:[],
+      graphsForCharts:[],
+      graphsForButtons:[],
+      selectedGraph: {
+        id: 0, name: 'zero', set: [{
+          FECHARESULTADO:"",
+          HORARESULTADO:"",
+          INFERIOR:0,
+          NUMOT:"",
+          RESULTADO:0,
+          SUPERIOR:0
+        }]
+  },
       loading: true,
       error: null
     }
+    this.updateGraphs = this.updateGraphs.bind(this)
   }
   componentDidMount(){
     this.getChartData();
+  }
+
+  getChartData() {
+    //Ajax Call
+
+    axios.get(`http://localhost:5000/data`)
+      .then(res => {
+        const graphsForCharts = res.data;
+        const graphsForButtons = res.data;
+        this.setState({
+          graphsForCharts,
+          graphsForButtons,
+          loading: false,
+          error: null
+        });
+      }).catch(err => {
+        // Something went wrong. Save the error in state and re-render.
+        this.setState({
+          loading: false,
+          error: err
+        });
+      });
   }
 
   renderLoading() {
@@ -30,6 +67,32 @@ class App extends Component {
         Something went wrong: {this.state.error.message}
       </div>
     );
+  }
+
+
+
+  updateGraphs(object){
+    function equalObject(elemento) {
+      return elemento.id === object.id;
+    }
+    const checkArray = this.state.graphs.some(equalObject)
+
+    if (!checkArray) {
+      const filtrado = this.state.graphsForCharts.filter(equalObject);
+      this.setState({
+        graphs: this.state.graphs.concat(filtrado)
+      })
+    } else {
+      const removeIndex = this.state.graphs.map(function (item) { return item.id; }).indexOf(object.id);
+
+      const check = this.state.graphs.splice(removeIndex, 1)
+      this.setState({
+        graphs: this.state.graphs
+      })
+
+    }
+
+
   }
 
   renderGraphs() {
@@ -45,38 +108,18 @@ class App extends Component {
       <div>
         <div className="col-md-2">
           <ButtonList
-            graphSelect={selectedGraph => this.setState({ selectedGraph })}
-            graphs={this.state.graphs} />
+            updateGraphs={this.updateGraphs}
+            graphs={this.state.graphsForButtons} />
         </div>
         <div className="col-md-10">
-          <ChartList selectedGraph={this.state.selectedGraph} />
+          <ChartList graphs={this.state.graphs} />
         </div>
-
       </div>
     );
   }
-  getChartData(){
-    //Ajax Call
 
-    axios.get(`http://localhost:5000/data`)
-      .then(res => {
-        const graphs = res.data;
-        this.setState({
-          graphs,
-          loading: false,
-          error: null
-        });
-      }).catch(err => {
-        // Something went wrong. Save the error in state and re-render.
-        this.setState({
-          loading: false,
-          error: err
-        });
-      });
-  }
   render() {
     const { loading } = this.state;
-
     return (
       <div>
         {loading ? this.renderLoading() : this.renderGraphs()}

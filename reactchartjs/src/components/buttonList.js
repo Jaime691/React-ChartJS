@@ -1,18 +1,25 @@
-import React from 'react';
-import ButtonListItem from './button';
+import React, {Component} from 'react';
+import ButtonListItem from './buttonListItem';
 
-const ButtonList = (props) => {
-    const graphItems = props.graphs.map((graph) => {
-        return <ButtonListItem
-            graphSelect={props.graphSelect}
-            key={graph.id}
-            graph={graph} />
-    })
-        return (
-                <ul className="list-group">
-                    {graphItems}
-                </ul>
+class ButtonList extends Component {
+    constructor(props){
+        super(props);
+
+
+    }
+    render(){
+        const buttonItems = this.props.graphs.map((graph) => {
+            return <ButtonListItem
+                updateGraphs={this.props.updateGraphs}
+                key={graph.id}
+                graph={graph}/>
+        })
+        return(
+            <ul className="list-group">
+                {buttonItems}
+            </ul> 
         );
+    }
 }
 
 export default ButtonList;
